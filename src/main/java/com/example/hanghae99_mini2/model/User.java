@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -24,13 +23,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany
-    private List<StudyInfo> studyInfoList;
-
     public User(UserDto requestDto){
         this.username = requestDto.getUsername();
         this.email = requestDto.getEmail();
         this.password = requestDto.getPassword();
-        this.studyInfoList = requestDto.getStudyInfoList();
     }
 }

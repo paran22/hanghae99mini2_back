@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -14,6 +13,9 @@ public class Study {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
+
+    @Column(nullable = false)
+    private Long registeredUserId;
 
     @Column(nullable = false)
     private String category;
@@ -33,18 +35,16 @@ public class Study {
     @Column(nullable = false)
     private String recruitState;
 
-    @OneToMany
-    private List<StudyInfo> studyInfoList;
 
     // createdAt은 Timestamped에서 상속받아 사용하므로 필드에서 뺐음.
 
     public Study(StudyDto requestDto){
         this.category = requestDto.getCategory();
+        this.registeredUserId = requestDto.getRegisteredUserId();
         this.name = requestDto.getName();
         this.content = requestDto.getContent();
         this.memberNum = requestDto.getMemberNum();
         this.currentMemberNum = requestDto.getCurrentMemberNum();
         this.recruitState = requestDto.getRecruitState();
-        this.studyInfoList = requestDto.getStudyInfoList();
     }
 }

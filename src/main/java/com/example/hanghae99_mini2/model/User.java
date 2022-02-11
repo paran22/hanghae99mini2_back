@@ -1,6 +1,5 @@
 package com.example.hanghae99_mini2.model;
 
-import com.example.hanghae99_mini2.dto.UserDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,7 @@ public class User {
     @Id
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -23,9 +22,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User(UserDto requestDto){
-        this.username = requestDto.getUsername();
-        this.email = requestDto.getEmail();
-        this.password = requestDto.getPassword();
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 }

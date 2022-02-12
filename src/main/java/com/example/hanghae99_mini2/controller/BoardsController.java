@@ -1,5 +1,6 @@
 package com.example.hanghae99_mini2.controller;
 
+import com.example.hanghae99_mini2.model.Study;
 import com.example.hanghae99_mini2.repository.BoardsRepository;
 import com.example.hanghae99_mini2.service.BoardsService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -22,12 +24,12 @@ public class BoardsController {
     }
 
     @GetMapping("/board/{id}")
-    public Study getBoard(@PathVariable Long id) {
+    public Optional<Study> getBoard(@PathVariable Long id) {
         return boardsRepository.findById(id);
     }
 
-    @PutMapping("/board/{id}/register/{username}")
-    public void recruitStudy(@PathVariable Long id, String username) {
-        boardsService.recruitStudy(id, username);
+    @PutMapping("/board/{id}/register/{userid}")
+    public void recruitStudy(@PathVariable Long id, Long userid) {
+        boardsService.recruitStudy(id, userid);
     }
 }

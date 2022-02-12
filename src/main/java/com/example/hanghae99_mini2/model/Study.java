@@ -3,10 +3,12 @@ package com.example.hanghae99_mini2.model;
 import com.example.hanghae99_mini2.dto.StudyDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Study {

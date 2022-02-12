@@ -1,10 +1,15 @@
 package com.example.hanghae99_mini2.service;
 
+import com.example.hanghae99_mini2.model.Study;
 import com.example.hanghae99_mini2.model.StudyInfo;
+import com.example.hanghae99_mini2.model.User;
 import com.example.hanghae99_mini2.repository.BoardsRepository;
+import com.example.hanghae99_mini2.repository.StudyInfoRepository;
 import com.example.hanghae99_mini2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -16,9 +21,22 @@ public class BoardsService {
 
 
     public  void recruitStudy(Long id, Long userId) {
-        Study study = boardsRepository.findById(id);
-        User user = userRepository.findById(userId);
+        Study study;
+        User user;
 
+        Optional<Study> tempStudy = boardsRepository.findById(id);
+        if(tempStudy.isPresent()) {
+            study = tempStudy.get();
+        } else {
+            throw new IllegalArgumentException("해당 스터디가 없습니다.");
+        }
+
+        Optional<User> tempUser = userRepository.findById(userId);
+        if(tempUser.isPresent()) {
+            user = tempUser.get();
+        } else {
+            throw new IllegalArgumentException("해당 유저가 없습니다.");
+        }
 
         StudyInfo newInfo = new StudyInfo();
 

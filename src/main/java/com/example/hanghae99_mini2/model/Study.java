@@ -1,5 +1,6 @@
 package com.example.hanghae99_mini2.model;
 
+import com.example.hanghae99_mini2.domain.Timestamped;
 import com.example.hanghae99_mini2.dto.StudyDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Study {
+public class Study extends Timestamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;

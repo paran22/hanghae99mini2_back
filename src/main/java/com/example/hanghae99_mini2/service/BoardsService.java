@@ -9,6 +9,7 @@ import com.example.hanghae99_mini2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -38,19 +39,25 @@ public class BoardsService {
             throw new IllegalArgumentException("해당 유저가 없습니다.");
         }
 
+        List<StudyInfo> studyInfos = studyInfoRepository.findAllByUser(user);
+        for (int i = 0; i <studyInfos.size(); i++) {
+            if(studyInfos.get(i).getStudy().equals(study)) {
+                throw new IllegalArgumentException("이미 등록된 유저입니다.");
+            }
+        }
+
         StudyInfo newInfo = new StudyInfo();
 
         Long memberNum = study.getMemberNum();
         Long currentMemberNum = study.getCurrentMemberNum();
 
-        if (++currentMemberNum > memberNum) {
+        if (currentMemberNum >= memberNum) {
             throw new IllegalArgumentException("모집인원이 이미 충족되었습니다.");
         } else {
-            study.setCurrentMemberNum(++currentMemberNum);
-            if(++currentMemberNum == memberNum) {
+            study.setCurrentMemberNum(currentMemberNum + 1);
+            if(study.getCurrentMemberNum().equals(memberNum)) {
                 study.setRecruitState("모집완료");
             }
-
 
             newInfo.setUser(user);
             newInfo.setStudy(boardsRepository.save(study));

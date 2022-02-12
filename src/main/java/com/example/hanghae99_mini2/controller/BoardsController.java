@@ -29,7 +29,7 @@ public class BoardsController {
     }
 
     @PutMapping("/board/{id}/register/{userid}")
-    public void recruitStudy(@PathVariable Long id, Long userid) {
+    public void recruitStudy(@PathVariable Long id, @PathVariable Long userid) {
         boardsService.recruitStudy(id, userid);
     }
 }

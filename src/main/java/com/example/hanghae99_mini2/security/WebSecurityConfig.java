@@ -1,21 +1,40 @@
 package com.example.hanghae99_mini2.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.Filter;
+
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
+    }
+
+    @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
+
 
     @Override
     public void configure(WebSecurity web) {
@@ -37,24 +56,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
 // [로그인 기능]
-                .formLogin()
-// 로그인 View 제공 (GET /user/login)
-                .loginPage("/user/login")
-// 로그인 처리 (POST /user/login)
-                .loginProcessingUrl("/user/login")
-// 로그인 처리 후 성공 시 URL
-                .defaultSuccessUrl("/boards")
-// 로그인 처리 후 실패 시 URL
-                .failureUrl("/user/login?error")
-                .permitAll()
-                .and()
+//                .formLogin()
+                .formLogin().disable()
+                .addFilterAt(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        //// 로그인 View 제공 (GET /user/login)
+//                .loginPage("/user/login")
+//// 로그인 처리 (POST /user/login)
+//                .loginProcessingUrl("/user/login")
+//// 로그인 처리 후 성공 시 URL
+//                .defaultSuccessUrl("/boards")
+//// 로그인 처리 후 실패 시 URL
+//                .failureUrl("/user/login?error")
+//                .permitAll()
+//                .and()
+
 // [로그아웃 기능]
-                .logout()
+                http.logout()
 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
                 .logoutSuccessUrl("/boards")
                 .permitAll()
                 .and()
                 .exceptionHandling();
+    }
+
+    protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {
+    CustomUsernamePasswordAuthenticationFilter authenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
+    try {
+        authenticationFilter.setFilterProcessesUrl("/user/login");
+        authenticationFilter.setAuthenticationManager(this.authenticationManagerBean());
+        authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+        authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return authenticationFilter;
     }
 }

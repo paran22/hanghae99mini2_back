@@ -15,7 +15,7 @@ public class BoardsService {
     private final StudyInfoRepository studyInfoRepository;
 
 
-    public  recruitStudy(Long id, Long userId) {
+    public  void recruitStudy(Long id, Long userId) {
         Study study = boardsRepository.findById(id);
         User user = userRepository.findById(userId);
 
@@ -37,7 +37,7 @@ public class BoardsService {
             newInfo.setUser(user);
             newInfo.setStudy(boardsRepository.save(study));
 
-            return studyInfoRepository.save(newInfo);
+            studyInfoRepository.save(newInfo);
 
         }
 

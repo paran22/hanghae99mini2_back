@@ -27,7 +27,7 @@ public class BoardsController {
     }
 
     @PutMapping("/board/{id}/register/{username}")
-    public Study recruitStudy(@PathVariable Long id, String username) {
-        return boardsService.recruitStudy(id, username);
+    public void recruitStudy(@PathVariable Long id, String username) {
+        boardsService.recruitStudy(id, username);
     }
 }

@@ -6,6 +6,7 @@ import com.example.hanghae99_mini2.model.User;
 import com.example.hanghae99_mini2.repository.UserRepository;
 import com.example.hanghae99_mini2.validation.SignupValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,11 @@ public class UserService {
 
     public DulplicateResponseDto duplicateEmail(String email) {
         return new DulplicateResponseDto(userRepository.existsByEmail(email));
+    }
+
+    public User readUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find " + username));
+        return user;
     }
 }

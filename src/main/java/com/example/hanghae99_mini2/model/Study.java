@@ -47,4 +47,14 @@ public class Study {
         this.currentMemberNum = requestDto.getCurrentMemberNum();
         this.recruitState = requestDto.getRecruitState();
     }
+
+    public void update(StudyDto requestDto){
+        this.category = requestDto.getCategory();
+        this.registeredUserId = requestDto.getRegisteredUserId();
+        this.name = requestDto.getName();
+        this.content = requestDto.getContent();
+        this.memberNum = requestDto.getMemberNum();
+        this.currentMemberNum = requestDto.getCurrentMemberNum();
+        this.recruitState = requestDto.getRecruitState();
+    }
 }

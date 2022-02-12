@@ -47,16 +47,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-//        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        //        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.authorizeRequests()
-// 회원 관리 처리 API 전부를 login 없이 허용
+                // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/user/**").permitAll()
                 // 그 외 어떤 요청이든 '인증'
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
                 .and()
 // [로그인 기능]
-//                .formLogin()
                 .formLogin().disable()
                 .addFilterAt(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -72,13 +71,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 
 // [로그아웃 기능]
-                http.logout()
+        http.logout()
 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
                 .logoutSuccessUrl("/boards")
-                .permitAll()
-                .and()
-                .exceptionHandling();
+                .permitAll();
     }
 
     protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {

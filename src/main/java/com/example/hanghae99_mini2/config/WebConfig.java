@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:8080",
                         "http://ministudy.s3-website.ap-northeast-2.amazonaws.com")
                 .allowedMethods("*")
-                .allowCredentials(true);
+                .allowedHeaders("*");
     }
 }

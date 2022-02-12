@@ -1,10 +1,18 @@
 package com.example.hanghae99_mini2.security;
 
+import com.example.hanghae99_mini2.dto.JSONResult;
+import com.example.hanghae99_mini2.dto.LoginResponseDto;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -25,12 +33,22 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             HttpServletRequest request,
             HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
+
+//        WebAuthenticationDetails web = (WebAuthenticationDetails) authentication.getDetails();
+//
+//        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
+//        MediaType jsonMimeType = MediaType.APPLICATION_JSON;
+//
+//        JSONResult jsonResult = JSONResult.success(web.getSessionId());
+//        if (jsonConverter.canWrite(jsonResult.getClass(), jsonMimeType)) {
+//            jsonConverter.write(jsonResult, jsonMimeType, new ServletServerHttpResponse(response));
+//        }
+
         //redirect
         resultRedirectStrategy(request, response, authentication);
         //로그인 실패한 에러 지우기
         clearAuthenticationAttributes(request);
     }
-
 
 
     protected void resultRedirectStrategy(
@@ -54,7 +72,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         //세션을 받아옴
         HttpSession session = request.getSession(false);
         //세션이 null, 즉 에러가 없는 경우
-        if(session == null) return;
+        if (session == null) return;
         //WebAttributes.AUTHENTICATION_EXCEPTION 으로 정의된 세션을 지운다.
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }

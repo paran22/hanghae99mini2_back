@@ -68,7 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/user/**").permitAll()
+                // board, boards 관련 API login 없이 허용
                 .antMatchers("/boards").permitAll()
+                .antMatchers("/board/**").permitAll()
                 // 그 외 어떤 요청이든 '인증'
 //                .anyRequest().permitAll()
                 .anyRequest().authenticated()

@@ -2,7 +2,11 @@ package com.example.hanghae99_mini2.service;
 
 import com.example.hanghae99_mini2.dto.StudyDto;
 import com.example.hanghae99_mini2.model.Study;
+import com.example.hanghae99_mini2.model.User;
 import com.example.hanghae99_mini2.repository.StudyRepository;
+import com.example.hanghae99_mini2.repository.UserRepository;
+import com.example.hanghae99_mini2.security.UserDetailsImpl;
+import com.example.hanghae99_mini2.validation.StudyRegisterValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +16,25 @@ import javax.transaction.Transactional;
 @Service
 public class StudyService {
     private final StudyRepository studyRepository;
+    private final UserRepository userRepository;
 
-    // Study 생성 메소드
-    public Study createStudy(StudyDto studyDto) {
+    // Study 생성 및 등록한 User의 StudyInfo 등록 메소드
+    public Study createStudy(StudyDto requestDto, UserDetailsImpl userDetails) {
+
+        // Study 생성 유효성 검사
+        StudyDto studyDto =  StudyRegisterValidation.validationStudyRegister(requestDto, userDetails);
+
+        // Long registeredId = userDetails.getUser().getId();
+        Long registeredId = 1L;
+        User user = userRepository.findById(registeredId)
+                .orElseThrow(() -> new IllegalArgumentException("createStudy 내부 user find 오류"));
+
         Study study = new Study(studyDto);
+//        StudyInfo studyInfo = new StudyInfo(user, study);
+
+        // Study 생성 후 바로 StudyInfo 추가
+//        studyInfoRepository.save(studyInfo);
+
         return studyRepository.save(study);
     }
 

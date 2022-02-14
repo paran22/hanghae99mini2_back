@@ -3,8 +3,10 @@ package com.example.hanghae99_mini2.controller;
 import com.example.hanghae99_mini2.domain.Timestamped;
 import com.example.hanghae99_mini2.dto.StudyDto;
 import com.example.hanghae99_mini2.model.Study;
+import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import com.example.hanghae99_mini2.service.StudyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,8 +18,8 @@ public class StudyController extends Timestamped {
 
     // Study 생성
     @PostMapping("/board/write")
-    public Study createStudy(@RequestBody StudyDto requestDto){
-        return studyService.createStudy(requestDto);
+    public Study createStudy(@RequestBody StudyDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return studyService.createStudy(requestDto, userDetails);
     }
 
     // Study 업데이트

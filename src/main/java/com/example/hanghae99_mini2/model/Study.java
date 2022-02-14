@@ -39,7 +39,7 @@ public class Study extends Timestamped {
     private String recruitState;
 
 
-    // createdAt은 Timestamped에서 상속받아 사용하므로 필드에서 뺐음.
+    // createdAt 은 Timestamped에서 상속받아 사용하므로 필드에서 뺐음.
 
     public Study(StudyDto requestDto){
         this.category = requestDto.getCategory();

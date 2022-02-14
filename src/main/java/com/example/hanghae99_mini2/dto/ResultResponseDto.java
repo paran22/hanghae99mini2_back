@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class DulplicateResponseDto {
+public class ResultResponseDto {
     boolean result;
 
-    public DulplicateResponseDto(boolean checkedresult){
+    public ResultResponseDto(boolean checkedresult){
         this.result = checkedresult;
     }
 }

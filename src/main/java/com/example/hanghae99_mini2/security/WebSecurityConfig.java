@@ -31,16 +31,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-@Bean
-    public LoginSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler();
-    }
-
-    @Bean
-    public LoginFailureHandler loginFailureHandler() {
-        return new LoginFailureHandler();
-    }
+//    @Bean
+//    public LoginSuccessHandler loginSuccessHandler() {
+//        return new LoginSuccessHandler();
+//    }
+//
+//    @Bean
+//    public LoginFailureHandler loginFailureHandler() {
+//        return new LoginFailureHandler();
+//    }
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -59,10 +60,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-        .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http
+                .csrf().disable()
+                .exceptionHandling()
+                    .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
+//        .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
         .authorizeRequests()
 //                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
@@ -105,16 +110,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return source;
 //    }
 
-    protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {
-    CustomUsernamePasswordAuthenticationFilter authenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
-    try {
-        authenticationFilter.setFilterProcessesUrl("/user/login");
-        authenticationFilter.setAuthenticationManager(this.authenticationManagerBean());
-        authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
-        authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return authenticationFilter;
-    }
+//    protected CustomUsernamePasswordAuthenticationFilter getAuthenticationFilter() {
+//    CustomUsernamePasswordAuthenticationFilter authenticationFilter = new CustomUsernamePasswordAuthenticationFilter();
+//    try {
+//        authenticationFilter.setFilterProcessesUrl("/user/login");
+//        authenticationFilter.setAuthenticationManager(this.authenticationManagerBean());
+//        authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+//        authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
+//    return authenticationFilter;
+//    }
 }

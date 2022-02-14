@@ -75,10 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
                 // board, boards 관련 API login 없이 허용
                 .antMatchers("/boards").permitAll()
-                .antMatchers("/board/**").permitAll()
+//                .antMatchers("/board/**").permitAll()
                 // 그 외 어떤 요청이든 '인증'
-//                .anyRequest().permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
+//                .anyRequest().authenticated()
                 .and()
                 .cors()
                 .and()
@@ -101,7 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
-                .logoutSuccessUrl("/boards")
+//                .logoutSuccessUrl("/")
                 .permitAll();
     }
 

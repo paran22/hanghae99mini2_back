@@ -9,10 +9,10 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class StudyDto {
     private String category;
-    private Long registeredUserId;
+//    private Long registeredUserId;
     private String name;
     private String content;
     private Long memberNum;
-    private Long currentMemberNum;
-    private String recruitState;
+//    private Long currentMemberNum;
+//    private String recruitState;
 }

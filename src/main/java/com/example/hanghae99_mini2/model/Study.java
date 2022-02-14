@@ -17,7 +17,7 @@ public class Study extends Timestamped {
     @Id
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long registeredUserId;
 
     @Column(nullable = false)
@@ -41,23 +41,23 @@ public class Study extends Timestamped {
 
     // createdAt 은 Timestamped에서 상속받아 사용하므로 필드에서 뺐음.
 
-    public Study(StudyDto requestDto){
+    public Study(StudyDto requestDto, Long registeredUserId){
         this.category = requestDto.getCategory();
-        this.registeredUserId = requestDto.getRegisteredUserId();
+        this.registeredUserId = registeredUserId;
         this.name = requestDto.getName();
         this.content = requestDto.getContent();
         this.memberNum = requestDto.getMemberNum();
-        this.currentMemberNum = requestDto.getCurrentMemberNum();
-        this.recruitState = requestDto.getRecruitState();
+        this.currentMemberNum = 1L;
+        this.recruitState = "모집중";
     }
 
     public void update(StudyDto requestDto){
         this.category = requestDto.getCategory();
-        this.registeredUserId = requestDto.getRegisteredUserId();
+//        this.registeredUserId = requestDto.getRegisteredUserId();
         this.name = requestDto.getName();
         this.content = requestDto.getContent();
         this.memberNum = requestDto.getMemberNum();
-        this.currentMemberNum = requestDto.getCurrentMemberNum();
-        this.recruitState = requestDto.getRecruitState();
+        this.currentMemberNum = 1L;
+        this.recruitState = "모집중";
     }
 }

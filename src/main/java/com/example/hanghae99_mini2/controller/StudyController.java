@@ -18,18 +18,19 @@ public class StudyController extends Timestamped {
 
     // Study 생성
     @PostMapping("/board/write")
-    public Study createStudy(@RequestBody StudyDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public Study createStudy(@RequestBody StudyDto requestDto,
+                             @AuthenticationPrincipal UserDetailsImpl userDetails){
         return studyService.createStudy(requestDto, userDetails);
     }
 
     // Study 업데이트
-    @PutMapping("/board/{id}/update")
-    public Study updateStudy(@PathVariable Long id, @RequestBody StudyDto requestDto) {
-        return studyService.updateStudy(id, requestDto);
-    }
+//    @PutMapping("/board/{id}/update")
+//    public Study updateStudy(@PathVariable Long id, @RequestBody StudyDto requestDto) {
+//        return studyService.updateStudy(id, requestDto);
+//    }
 
     // Study 삭제
-    @PostMapping("/board/{id}/delete")
+    @DeleteMapping("/board/{id}/delete")
     public void deleteStudy(@PathVariable Long id) {
         studyService.deleteStudy(id);
     }

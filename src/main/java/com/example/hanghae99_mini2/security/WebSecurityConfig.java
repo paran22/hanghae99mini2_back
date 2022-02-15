@@ -28,15 +28,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
-    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     public WebSecurityConfig(
             JWTAuthProvider jwtAuthProvider,
-            HeaderTokenExtractor headerTokenExtractor,
-            RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
+            HeaderTokenExtractor headerTokenExtractor) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.headerTokenExtractor = headerTokenExtractor;
-        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
     }
 
     @Bean

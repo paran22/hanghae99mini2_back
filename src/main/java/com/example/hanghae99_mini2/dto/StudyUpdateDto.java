@@ -13,6 +13,6 @@ public class StudyUpdateDto {
     private String name;
     private String content;
     private Long memberNum;
-//    private Long currentMemberNum;
-//    private String recruitState;
+    //    private Long currentMemberNum;
+    private String recruitState;
 }

@@ -2,6 +2,8 @@ package com.example.hanghae99_mini2.model;
 
 import com.example.hanghae99_mini2.domain.Timestamped;
 import com.example.hanghae99_mini2.dto.StudyRegisterDto;
+import com.example.hanghae99_mini2.dto.StudyUpdateDto;
+import com.example.hanghae99_mini2.dto.StudyUpdateDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,13 +55,13 @@ public class Study extends Timestamped {
         this.recruitState = "모집중";
     }
 
-    public void update(StudyRegisterDto requestDto){
+    public void update(StudyUpdateDto requestDto){
         this.category = requestDto.getCategory();
 //        this.registeredUserId = requestDto.getRegisteredUserId();
         this.name = requestDto.getName();
         this.content = requestDto.getContent();
         this.memberNum = requestDto.getMemberNum();
-        this.currentMemberNum = 1L;
-        this.recruitState = "모집중";
+//        this.currentMemberNum = 1L;
+        this.recruitState = requestDto.getRecruitState();
     }
 }

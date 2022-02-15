@@ -1,16 +1,17 @@
 package com.example.hanghae99_mini2.validation;
 
 import com.example.hanghae99_mini2.dto.StudyRegisterDto;
+import com.example.hanghae99_mini2.repository.UserRepository;
+import com.example.hanghae99_mini2.security.UserDetailsImpl;
 
 public class StudyRegisterValidation {
     // 스터디 생성 유효성검사
-    public static void validationStudyRegister(StudyRegisterDto requestDto) {
-        //@AuthenticationPrincipal UserDetailsImpl userDetails 매개변수에서 우선 배제
-//        if(userDetails.getUser().getId() != null){
-//            requestDto.setRegisteredUserId(userDetails.getUser().getId());
-//        }else{
-//            throw new IllegalArgumentException("올바르지 않은 Login UserId 입니다.");
-//        }
+    public static void validationStudyRegister(StudyRegisterDto requestDto, UserDetailsImpl userDetails,
+                                               UserRepository userRepository) {
+
+//        User user = userRepository.findById(userDetails.getUser().getId())
+//                .orElseThrow(() -> new IllegalArgumentException("validationStudyRegister 내부 user find 오류"));
+
         String category = requestDto.getCategory();
         String name = requestDto.getName();
         String content = requestDto.getContent();
@@ -24,7 +25,7 @@ public class StudyRegisterValidation {
         if (category.trim().isEmpty()) {
             throw new IllegalArgumentException("카테고리를 선택해 주세요.");
         } else if (name.trim().isEmpty()) {
-            throw new IllegalArgumentException("이름을 입력해 주세요.");
+            throw new IllegalArgumentException("제목을 입력해 주세요.");
         } else if (content.trim().isEmpty()) {
             throw new IllegalArgumentException("내용을 입력해 주세요.");
         }
@@ -34,5 +35,6 @@ public class StudyRegisterValidation {
             // 최소 2명이상부터 입력되도록 설정
             throw new IllegalArgumentException("스터디 멤버는 2 ~ 15명까지 설정가능합니다.");
         }
+//        return user;
     }
 }

@@ -7,12 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class StudyDto {
+public class StudyRegisterDto {
     private String category;
-//    private Long registeredUserId;
     private String name;
     private String content;
     private Long memberNum;
-//    private Long currentMemberNum;
-//    private String recruitState;
 }

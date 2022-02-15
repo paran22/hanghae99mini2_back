@@ -1,7 +1,7 @@
 package com.example.hanghae99_mini2.controller;
 
 import com.example.hanghae99_mini2.domain.Timestamped;
-import com.example.hanghae99_mini2.dto.StudyDto;
+import com.example.hanghae99_mini2.dto.StudyRegisterDto;
 import com.example.hanghae99_mini2.model.Study;
 import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import com.example.hanghae99_mini2.service.StudyService;
@@ -18,9 +18,9 @@ public class StudyController extends Timestamped {
 
     // Study 생성
     @PostMapping("/board/write")
-    public Study createStudy(@RequestBody StudyDto requestDto,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return studyService.createStudy(requestDto, userDetails);
+    public Study createStudy(@RequestBody StudyRegisterDto requestDto){
+        //@AuthenticationPrincipal UserDetailsImpl userDetails 매개변수에서 우선 배제
+        return studyService.createStudy(requestDto);
     }
 
     // Study 업데이트

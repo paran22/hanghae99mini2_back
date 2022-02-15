@@ -1,14 +1,16 @@
 package com.example.hanghae99_mini2.controller;
 
+import com.example.hanghae99_mini2.dto.StudyDto;
 import com.example.hanghae99_mini2.model.Study;
 import com.example.hanghae99_mini2.repository.BoardsRepository;
+import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import com.example.hanghae99_mini2.service.BoardsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +33,10 @@ public class BoardsController {
     @PutMapping("/board/{id}/register/{userid}")
     public void recruitStudy(@PathVariable Long id, @PathVariable Long userid) {
         boardsService.recruitStudy(id, userid);
+    }
+
+    @GetMapping("/boards/{category}")
+    public List<Study> divideCategory(@PathVariable String category) throws UnsupportedEncodingException {
+        return boardsRepository.findAllByCategoryOrderByCreatedAtDesc(category);
     }
 }

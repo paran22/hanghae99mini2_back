@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BoardsRepository extends JpaRepository<Study, Long> {
     List<Study> findAllByOrderByCreatedAtDesc();
+    List<Study> findAllByCategoryOrderByCreatedAtDesc(String category);
 }

@@ -6,6 +6,7 @@ import com.example.hanghae99_mini2.model.User;
 import com.example.hanghae99_mini2.repository.BoardsRepository;
 import com.example.hanghae99_mini2.repository.StudyInfoRepository;
 import com.example.hanghae99_mini2.repository.UserRepository;
+import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,10 @@ import java.util.Optional;
 @Service
 public class BoardsService {
     private final BoardsRepository boardsRepository;
-    private final UserRepository userRepository;
     private final StudyInfoRepository studyInfoRepository;
 
 
-    public void recruitStudy(Long id, Long userId) {
+    public void recruitStudy(Long id, UserDetailsImpl userDetails) {
         Study study;
         User user;
 
@@ -32,12 +32,7 @@ public class BoardsService {
             throw new IllegalArgumentException("해당 스터디가 없습니다.");
         }
 
-        Optional<User> tempUser = userRepository.findById(userId);
-        if(tempUser.isPresent()) {
-            user = tempUser.get();
-        } else {
-            throw new IllegalArgumentException("해당 유저가 없습니다.");
-        }
+        user = userDetails.getUser();
 
         List<StudyInfo> studyInfos = studyInfoRepository.findAllByUser(user);
         for (int i = 0; i <studyInfos.size(); i++) {

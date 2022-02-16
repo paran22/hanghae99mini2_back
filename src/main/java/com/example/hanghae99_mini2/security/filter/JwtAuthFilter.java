@@ -47,7 +47,7 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=utf-8");
             JSONObject json = new JSONObject();
-            String message = "아이디 또는 비밀번호를 확인해주세요.";
+            String message = "토큰이 존재하지 않습니다.";
             json.put("httpStatus", HttpStatus.UNAUTHORIZED);
             json.put("errorMessage", message);
 

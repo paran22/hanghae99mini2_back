@@ -47,6 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public LoginFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
+    }
+
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
@@ -108,6 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             new CustomUsernamePasswordAuthenticationFilter(authenticationManager());
         authenticationFilter.setFilterProcessesUrl("/user/login");
         authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+        authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
         authenticationFilter.afterPropertiesSet();
     return authenticationFilter;
     }

@@ -19,11 +19,13 @@ public abstract class Timestamped {
     private String createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    // LocalDateTime 타입에서 String으로 변경
+    private String modifiedAt;
+
 
     @PrePersist
     public void onPrePersist(){
         this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-//        this.createdAt = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+        this.modifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
     }
 }

@@ -38,7 +38,6 @@ public class StudyService {
 
         //Study 생성 후 바로 StudyInfo 추가(생성과 동시에 스터디 가입 처리)
         studyInfoRepository.save(studyInfo);
-
         return study;
     }
 

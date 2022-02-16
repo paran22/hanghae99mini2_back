@@ -1,5 +1,6 @@
 package com.example.hanghae99_mini2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

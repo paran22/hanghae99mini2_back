@@ -21,16 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 로그인 요청
-//    @PostMapping("/user/login")
-//    public AuthenticationToken login(
-//            @RequestBody LoginDto loginDto,
-//            HttpSession session
-//    ) {
-//        AuthenticationToken authenticationToken = userService.getAuthenticatoinToken(loginDto, session);
-//        return authenticationToken;
-//    }
-
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
     public ResultResponseDto registerUser(@RequestBody SignupRequestDto requestDto) {
@@ -53,7 +43,8 @@ public class UserController {
     //회원 정보 조회
     @GetMapping("/userinfo")
     public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new UserInfoDto(userDetails.getUser().getId(), userDetails.getUsername());
+        UserInfoDto userInfoDto = userService.getUserInfo(userDetails);
+        return userInfoDto;
     }
 
 }

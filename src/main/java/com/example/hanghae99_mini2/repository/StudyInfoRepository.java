@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface StudyInfoRepository extends JpaRepository<StudyInfo, Long> {
     List<StudyInfo> findAllByUser(User user);
-
     List<StudyInfo> findAllByStudy(Study study);
 }

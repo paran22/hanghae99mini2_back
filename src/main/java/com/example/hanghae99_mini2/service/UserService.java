@@ -2,26 +2,36 @@ package com.example.hanghae99_mini2.service;
 
 import com.example.hanghae99_mini2.dto.ResultResponseDto;
 import com.example.hanghae99_mini2.dto.SignupRequestDto;
+import com.example.hanghae99_mini2.dto.UserInfoDto;
+import com.example.hanghae99_mini2.model.Study;
+import com.example.hanghae99_mini2.model.StudyInfo;
 import com.example.hanghae99_mini2.model.User;
+import com.example.hanghae99_mini2.repository.StudyInfoRepository;
+import com.example.hanghae99_mini2.repository.StudyRepository;
 import com.example.hanghae99_mini2.repository.UserRepository;
+import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import com.example.hanghae99_mini2.validation.SignupValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
+    private final StudyInfoRepository studyInfoRepository;
+    private final StudyRepository studyRepository;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, AuthenticationManager authenticationManager) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, StudyInfoRepository studyInfoRepository, StudyRepository studyRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
+        this.studyInfoRepository = studyInfoRepository;
+        this.studyRepository = studyRepository;
     }
 
     public ResultResponseDto registerUser(SignupRequestDto requestDto) {
@@ -51,22 +61,17 @@ public class UserService {
         return new ResultResponseDto(userRepository.existsByEmail(email));
     }
 
-    //로그인 시 인증 과정 + Token 생성
-//    public AuthenticationToken getAuthenticatoinToken(LoginDto loginDto, HttpSession session) {
-//
-//        String username = loginDto.getUsername();
-//        String password = loginDto.getPassword();
-//
-//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-//        Authentication authentication = authenticationManager.authenticate(token);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-//                SecurityContextHolder.getContext());
-//
-//        User user = userRepository.findByUsername(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("Can't find " + username));
-//        UserDetailsImpl userDetails = new UserDetailsImpl(user);
-//        return new AuthenticationToken(userDetails.getUsername(), userDetails.getAuthorities(), session.getId());
-//
-//    }
+    public UserInfoDto getUserInfo(UserDetailsImpl userDetails) {
+        List<StudyInfo> studyInfoList = studyInfoRepository.findAllByUser(userDetails.getUser());
+        List<Study> registerStudyList = new ArrayList<>();
+        for (StudyInfo studyInfo : studyInfoList) {
+            registerStudyList.add(studyInfo.getStudy());
+        }
+        return new UserInfoDto(
+                userDetails.getUser().getId(),
+                userDetails.getUsername(),
+                registerStudyList
+        );
+    }
+
 }

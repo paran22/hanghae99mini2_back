@@ -37,6 +37,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public LoginAuthProvider loginAuthProvider() {
+        return new LoginAuthProvider(encodePassword());
+    }
+
+    @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
@@ -59,28 +75,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
-                .csrf()
+        http.csrf()
                 .disable()
         // 서버에서 인증은 JWT로 인증하기 때문에 Session의 생성을 막습니다.
-                .sessionManagement()
+            .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(restAuthenticationEntryPoint)
-                .and()
-                .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+            .and()
+            .addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
-                http.authorizeRequests()
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        http.authorizeRequests()
+//              .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                // 그 외 어떤 요청이든 '인증'
                 .anyRequest().permitAll()
-                .and()
-                .cors()
-                .and()
-                .formLogin().disable();
+            .and()
+            .cors()
+            .and()
+            .formLogin().disable();
 
 // [로그아웃 기능]
         http.logout()
@@ -101,6 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return authenticationFilter;
     }
 
+    // JWT 인증 여부 필터
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
 
@@ -127,19 +139,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-    @Bean
-    public LoginAuthProvider loginAuthProvider() {
-        return new LoginAuthProvider(encodePassword());
-    }
-
-    @Bean
-    public LoginSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler();
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 }

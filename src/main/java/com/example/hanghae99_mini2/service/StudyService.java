@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,26 +24,17 @@ public class StudyService {
     private final StudyInfoRepository studyInfoRepository;
     private final UserRepository userRepository;
 
-    // Study 생성 및 등록한 User의 StudyInfo 등록 메소드
+
     public Study createStudy(StudyRegisterDto requestDto, UserDetailsImpl userDetails) {
-        // 매개변수 requestDto, UserDetails 유효성 검사
-        StudyRegisterValidation.validationStudyRegister(requestDto, userDetails, userRepository);
+        // 매개변수 requestDto, UserId 유효성 검사
+        User user = StudyRegisterValidation.validationStudyRegister(requestDto, userDetails, userRepository);
 
         // 유효성검사 끝난 user의 id 받아서 registeredUserId 설정
-        Long registeredUserId = userDetails.getUser().getId();
-        // (테스트용)
-//        Long registeredUserId = 1L;
-
-        Study study = new Study(requestDto, registeredUserId);
-
-        // (테스트용)
-        User user = userRepository.findById(registeredUserId)
-                .orElseThrow(() -> new IllegalArgumentException("createStudy 내부 user find 오류"));
+        Study study = new Study(requestDto, user.getId());
 
         // DB에 save먼저하고 StudyInfo에 저장가능합니다.
         // 영속성이 깨진다고 합니다.
-        studyRepository.save(study);
-        StudyInfo studyInfo = new StudyInfo(user, study);
+        StudyInfo studyInfo = new StudyInfo(user, studyRepository.save(study));
 
         //Study 생성 후 바로 StudyInfo 추가(생성과 동시에 스터디 가입 처리)
         studyInfoRepository.save(studyInfo);
@@ -61,6 +53,18 @@ public class StudyService {
 
     // Study 삭제 메소드
     public void deleteStudy(Long id) {
+        // delete할 Study find
+        Study study = studyRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("deleteStudy 내부 StudyIdfind 오류 입니다.")
+        );
+        // StudyinfoDB에서 study 필드 가진 studyInfo find
+        List<StudyInfo> studyInfoList =  studyInfoRepository.findAllByStudy(study);
+        for (StudyInfo studyInfo : studyInfoList) {
+            if (studyInfo.getStudy() == study) {
+                // studyInfoList내부 study와 find한 study가 같으면 해당 studyInfo delete
+                studyInfoRepository.delete(studyInfo);
+            }
+        }
         studyRepository.deleteById(id);
     }
 }

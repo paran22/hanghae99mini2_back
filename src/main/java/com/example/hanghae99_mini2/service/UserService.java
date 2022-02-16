@@ -2,22 +2,13 @@ package com.example.hanghae99_mini2.service;
 
 import com.example.hanghae99_mini2.dto.ResultResponseDto;
 import com.example.hanghae99_mini2.dto.SignupRequestDto;
-import com.example.hanghae99_mini2.model.AuthenticationToken;
 import com.example.hanghae99_mini2.model.User;
 import com.example.hanghae99_mini2.repository.UserRepository;
-import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import com.example.hanghae99_mini2.validation.SignupValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
 
 
 @Service

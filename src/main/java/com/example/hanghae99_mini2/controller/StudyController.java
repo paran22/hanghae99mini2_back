@@ -19,8 +19,7 @@ public class StudyController extends Timestamped {
 
     // Study 생성
     @PostMapping("/board/write")
-    public Study createStudy(@RequestBody StudyRegisterDto requestDto,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public Study createStudy(@RequestBody StudyRegisterDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return studyService.createStudy(requestDto, userDetails);
     }
 

@@ -24,7 +24,7 @@ public class LoginAuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-        // FormLoginFilter 에서 생성된 토큰으로부터 아이디와 비밀번호를 조회함
+        // CustomUsernamePasswordAuthenticationFilter 에서 생성된 토큰으로부터 아이디와 비밀번호를 조회함
         String username = token.getName();
         String password = (String) token.getCredentials();
 

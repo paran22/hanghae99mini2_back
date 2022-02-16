@@ -21,7 +21,7 @@ public class BoardsService {
     private final StudyInfoRepository studyInfoRepository;
 
 
-    public  void recruitStudy(Long id, Long userId) {
+    public void recruitStudy(Long id, Long userId) {
         Study study;
         User user;
 
@@ -63,7 +63,6 @@ public class BoardsService {
             newInfo.setStudy(boardsRepository.save(study));
 
             studyInfoRepository.save(newInfo);
-
         }
 
     }

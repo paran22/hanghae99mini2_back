@@ -41,7 +41,7 @@ public class Study extends Timestamped {
     private String recruitState;
 
 
-    // createdAt 은 Timestamped에서 상속받아 사용하므로 필드에서 뺐음.
+    // createdAt, modifiedAt 은 Timestamped에서 상속받아 사용하므로 필드에서 뺐음.
 
     public Study(StudyRegisterDto requestDto, Long registeredUserId){
         this.category = requestDto.getCategory();
@@ -57,11 +57,9 @@ public class Study extends Timestamped {
 
     public void update(StudyUpdateDto requestDto){
         this.category = requestDto.getCategory();
-//        this.registeredUserId = requestDto.getRegisteredUserId();
         this.name = requestDto.getName();
         this.content = requestDto.getContent();
         this.memberNum = requestDto.getMemberNum();
-//        this.currentMemberNum = 1L;
         this.recruitState = requestDto.getRecruitState();
     }
 }

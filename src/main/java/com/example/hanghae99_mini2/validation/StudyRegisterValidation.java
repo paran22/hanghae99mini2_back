@@ -1,16 +1,18 @@
 package com.example.hanghae99_mini2.validation;
 
 import com.example.hanghae99_mini2.dto.StudyRegisterDto;
+import com.example.hanghae99_mini2.model.User;
 import com.example.hanghae99_mini2.repository.UserRepository;
 import com.example.hanghae99_mini2.security.UserDetailsImpl;
 
 public class StudyRegisterValidation {
     // 스터디 생성 유효성검사
-    public static void validationStudyRegister(StudyRegisterDto requestDto, UserDetailsImpl userDetails,
+    public static User validationStudyRegister(StudyRegisterDto requestDto, UserDetailsImpl userDetails,
                                                UserRepository userRepository) {
-
-//        User user = userRepository.findById(userDetails.getUser().getId())
-//                .orElseThrow(() -> new IllegalArgumentException("validationStudyRegister 내부 user find 오류"));
+        //UserDetails UserId 유효성검사
+        User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new IllegalArgumentException("validationStudyRegister 내부 UserDetailsGetUserId 오류 입니다.")
+        );
 
         String category = requestDto.getCategory();
         String name = requestDto.getName();
@@ -32,9 +34,9 @@ public class StudyRegisterValidation {
 
         // memberNum 확인
         if (memberNum <= 1 || memberNum > 15) {
-            // 최소 2명이상부터 입력되도록 설정
+            // 최소 2명이상부터 15명까지만 입력되도록 설정
             throw new IllegalArgumentException("스터디 멤버는 2 ~ 15명까지 설정가능합니다.");
         }
-//        return user;
+        return user;
     }
 }

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -65,5 +67,38 @@ public class StudyService {
             }
         }
         studyRepository.deleteById(id);
+    }
+
+    // Study 탈퇴 메소드
+    public void secessionStudy(Long studyid, UserDetailsImpl userDetails) {
+        Study study;
+
+        // studyid 유효성검사
+        Optional <Study> studyOptional = studyRepository.findById(studyid);
+        if(!studyOptional.isPresent()){
+            throw new IllegalArgumentException("secessionStudy 내부 findByIdStudy 오류.");
+        }else{
+            study = studyOptional.get();
+        }
+
+        User user = userDetails.getUser();
+
+        // studyInfo 유효성검사
+        Optional <StudyInfo> studyInfo = studyInfoRepository.findByUserAndStudy(user, study);
+        if(!studyInfo.isPresent()){
+            throw new IllegalArgumentException("secessionStudy 내부 findByUserAndStudy 오류.");
+        }
+
+        // 스터디 탈퇴 제한 및 recruitState 자동변경
+        if(study.getCurrentMemberNum() == 1){
+            throw new IllegalArgumentException("스터디 Member 최후의 1인은 나갈 수 없습니다.");
+        }else if(Objects.equals(study.getRecruitState(), "모집완료")){
+            study.setRecruitState("모집중");
+        }
+
+        // 스터디 탈퇴처리
+        study.setCurrentMemberNum(study.getCurrentMemberNum()-1);
+        studyInfoRepository.delete(studyInfo.get());
+
     }
 }

@@ -34,4 +34,10 @@ public class StudyController extends Timestamped {
     public void deleteStudy(@PathVariable Long id) {
         studyService.deleteStudy(id);
     }
+
+    // Study 탈퇴
+    @DeleteMapping("/board/{studyid}/secession")
+    public void secessionStudy(@PathVariable Long studyid, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        studyService.secessionStudy(studyid, userDetails);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.hanghae99_mini2.controller;
 
+import com.example.hanghae99_mini2.dto.BoardResponseDto;
 import com.example.hanghae99_mini2.model.Study;
 import com.example.hanghae99_mini2.repository.BoardsRepository;
 import com.example.hanghae99_mini2.security.UserDetailsImpl;
@@ -24,8 +25,8 @@ public class BoardsController {
     }
 
     @GetMapping("/board/{id}")
-    public Optional<Study> getBoard(@PathVariable Long id) {
-        return boardsRepository.findById(id);
+    public BoardResponseDto getBoard(@PathVariable Long id) {
+        return boardsService.getBoard(id);
     }
 
     @PutMapping("/board/{id}/register")

@@ -1,5 +1,6 @@
 package com.example.hanghae99_mini2.service;
 
+import com.example.hanghae99_mini2.dto.BoardResponseDto;
 import com.example.hanghae99_mini2.model.Study;
 import com.example.hanghae99_mini2.model.StudyInfo;
 import com.example.hanghae99_mini2.model.User;
@@ -10,6 +11,7 @@ import com.example.hanghae99_mini2.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,5 +62,38 @@ public class BoardsService {
             studyInfoRepository.save(newInfo);
         }
 
+    }
+    public BoardResponseDto getBoard(Long id) {
+        Study study;
+        Optional<Study> temp = boardsRepository.findById(id);
+        List<Long> userIds = new ArrayList<>();
+        BoardResponseDto boardResponseDto = new BoardResponseDto();
+
+        if(temp.isPresent()) {
+            study = temp.get();
+        }
+        else {
+            throw new IllegalArgumentException("게시글 아이디가 잘못되었습니다.");
+        }
+
+        List<StudyInfo> studyInfos = studyInfoRepository.findAllByStudy(study);
+
+        for (int i = 0; i < studyInfos.size(); i++) {
+            userIds.add(studyInfos.get(i).getUser().getId());
+        }
+
+        boardResponseDto.setId(study.getId());
+        boardResponseDto.setRegisteredUserId(study.getRegisteredUserId());
+        boardResponseDto.setCategory(study.getCategory());
+        boardResponseDto.setName(study.getName());
+        boardResponseDto.setContent(study.getContent());
+        boardResponseDto.setMemberNum(study.getMemberNum());
+        boardResponseDto.setCurrentMemberNum(study.getCurrentMemberNum());
+        boardResponseDto.setRecruitState(study.getRecruitState());
+        boardResponseDto.setCreatedAt(study.getCreatedAt());
+        boardResponseDto.setModifiedAt(study.getModifiedAt());
+        boardResponseDto.setUserIds(userIds);
+
+        return boardResponseDto;
     }
 }

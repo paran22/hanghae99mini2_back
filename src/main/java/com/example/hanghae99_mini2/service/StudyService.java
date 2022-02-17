@@ -70,6 +70,7 @@ public class StudyService {
     }
 
     // Study 탈퇴 메소드
+    @Transactional
     public void secessionStudy(Long studyid, UserDetailsImpl userDetails) {
         Study study;
 
@@ -91,7 +92,7 @@ public class StudyService {
 
         // 스터디 탈퇴 제한 및 recruitState 자동변경
         if(study.getCurrentMemberNum() == 1){
-            throw new IllegalArgumentException("스터디 Member 최후의 1인은 나갈 수 없습니다.");
+            throw new IllegalArgumentException("스터디 Member 최후의 1인은 나갈 수 없습니다. 스터디를 삭제해주세요");
         }else if(Objects.equals(study.getRecruitState(), "모집완료")){
             study.setRecruitState("모집중");
         }
